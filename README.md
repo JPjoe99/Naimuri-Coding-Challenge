@@ -14,6 +14,13 @@ Once the repositories have been retrieved, the application then outputs the key 
 - Number of issues
 - README of the repository
 
+Instructions to run the repository:-
+
+- Run "npm install" in the terminal to install the required dependencies
+- Install Live Server (extension in VSCode marketplace) to launch a local server to run the repository
+- Once installed, right click on index.html and click "open with live server" to run the repository
+- If any changes are made to the TypeScript files found in the src folder, run "npm run build" to transpile the TypeScript files into Javascript
+
 Possible improvements:
 
 With this challenge, I took a purely functional approach in my solution, but in hindsight, I think a much better solution would have been obtained if I took an object-oriented approach, as I believe the code would be more manageable and scalable in comparison. Using an object-oriented approach would have also allowed me to better seperate functions/classes in seperate files, as another issue with my code is the fact that all of my functions are all located in the script.ts file, resulting in a file that is large and more difficult to read.
