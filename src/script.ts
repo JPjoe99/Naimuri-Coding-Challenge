@@ -6,23 +6,56 @@ let dropdownElement: HTMLElement = document.querySelector("#dropdown-button");
 
 let submitElement: HTMLElement = document.querySelector("#submit");
 
-//dropdownElement.addEventListener("click", showFilters);
-
-function showFilters(e: Event) {
-    console.log(e);
-    //console.log(e.target.nextElementSibling);
-    //let childNode: 
+let languages: HTMLCollection = document.querySelector(".dropdown-content").children;
+for (let i: number = 0; i < languages.length; i++) {
+    languages[i].addEventListener("click", setAsCurrentLanguage);
 }
 
-
-
-
-// inputElement.addEventListener("click", sendRequestToGitHubAPI);
+function setAsCurrentLanguage(e: Event): void {
+    let currentLang = document.querySelector(".lang.active");
+    currentLang.className = ".lang";
+    let selectedElement = <HTMLElement>(e.target);
+    selectedElement.className = "lang active";
+}
 
 submitElement.addEventListener("click", sendRequestToGitHubAPI);
 
+function obtainFilters(): JSON {
+    let userFilter: HTMLInputElement = document.querySelector("#user");
+    let repoFilter: HTMLInputElement = document.querySelector("#repo");
+    let languageFilter: string = document.querySelector(".lang.active").textContent;
+    let filterJSON: any = {
+        "repo": repoFilter.value,
+        "user": userFilter.value,
+        "language": languageFilter
+    }
+    return <JSON>filterJSON;
+}
+
+function clearCurrentRepos(): void {
+    mainElement.innerHTML = "";
+}
+
+function constructGitHubAPIRequest(): string {
+    let filterJSON: any = obtainFilters();
+    console.log(filterJSON);
+    let GitHubAPICall: string = `https://api.github.com/search/repositories?q=`;
+    let repo = filterJSON.repo;
+    GitHubAPICall += `${repo}`;
+    if (filterJSON.user != ``) {
+        GitHubAPICall += `+user:${filterJSON.user}`;
+    }
+    if (filterJSON.language != ``) {
+        GitHubAPICall += `+language:${filterJSON.language}`;
+    }
+    return GitHubAPICall;
+}
+
 function sendRequestToGitHubAPI(e: Event): void {
-    let GitHubAPICall: string = `https://api.github.com/search/repositories?q=battleships`;
+    clearCurrentRepos();
+    constructGitHubAPIRequest();
+    let GitHubAPICall: string = constructGitHubAPIRequest();
+    console.log(GitHubAPICall);
     fetch(GitHubAPICall, {
         method: "GET",
         headers: {
@@ -33,40 +66,82 @@ function sendRequestToGitHubAPI(e: Event): void {
         return res.json();
     })
     .then(data => {
-        console.log(data.items);
-        for (let i: number = 0; i < data.items.length; i++) {
-            outputToDocument(data.items[i]);
+        if (data.items.length == 0) {
+            mainElement.innerHTML = `<h1 class="text-center">No repositories found!</h1>`;
         }
+        console.log(data.items);
+        outputToDocument(data.items);
     })
     .catch(error => {
         console.log(error);
     })
 }
 
-// function fetchForks
+function getReadMe() {
 
-function constructRepoHTML(item: any): HTMLElement {
+}
+
+function fetchReadMe(item: any): any {
+    fetch(`https://api.github.com/repos/${item.owner.login}/${item.name}/readme`)
+    .then(res => {
+        return res.json();
+    })
+    .then(data => {
+        //let readMe = atob(data.content);
+        //console.log(readMe);
+        console.log(data);
+        return data.content;
+    })
+    .catch(error => {
+        console.log(error);
+    })
+}
+
+function constructRepoCardHTML(item: any): HTMLElement {
     let repoElement: HTMLElement = document.createElement("div");
-    repoElement.className = "col-12 repo-card";
+    //fetchReadMe(item);
+    repoElement.id = `${item.id}`;
+    repoElement.className = "col-6 repo-card";
     let repoInnerHTML: string = ``;
-    repoInnerHTML += `<h2>Repository: <a href="${item.html_url}" target="_blank">${item.name}</a></h2>
-                      <h3>Author: <a href="${item.owner.html_url}" target="_blank">${item.owner.login}</a></h3>
+    repoInnerHTML += `<h2 class="text-center"><a id="repo-header" href="${item.html_url}" target="_blank">${item.name}</a></h2>
+                      <h3 class="text-center">By <a id="repo-header" href="${item.owner.html_url}" target="_blank">${item.owner.login}</a></h3>
+                      <p class="text-center">${item.description}</p>
                       <hr>
-                      <h4>Key Details</h4>
-                      <h5>Forks: ${item.forks}</h5>
-                      <h5>Stars: </h5>
-                      <h5>Issue counts: </h5>
+                      <h3 class="text-center">Key Details</h3>
+                      <div class="row">
+                        <div class="col-4">
+                          <h4 class="text-center">Forks</h4>
+                          <h1 class="text-center">${item.forks_count}</h1>
+                        </div>
+                        <div class="col-4">
+                          <h4 class="text-center">Stars</h4>
+                          <h1 class="text-center">${item.stargazers_count}</h1>
+                        </div>
+                        <div class="col-4">
+                          <h4 class="text-center">Issues</h4>
+                          <h1 class="text-center">${item.open_issues_count}</h1>
+                        </div>
+                      </div>
+
+                      <p>Read Me:</p>
                       `;
     repoElement.innerHTML = repoInnerHTML;
     return repoElement;
 }
 
-function outputToDocument(item: any): void {
+
+
+
+function outputToDocument(items: Array<any>): void {
     let repoElement: HTMLElement =  document.createElement("div");
     repoElement.className = "row";
-    let repoCard: HTMLElement = document.createElement("div");
-    repoCard.className = "col-12 repo-card";
-    let constructedRepoElement: HTMLElement = constructRepoHTML(item);
-    repoElement.appendChild(constructedRepoElement);
+    let constructedRepoElement: HTMLElement;
+    for (let i: number = 0; i < items.length; i++) {
+        constructedRepoElement = constructRepoCardHTML(items[i]);
+        //constructedRepoElement = fetchRepositoryCardSnippet();
+        //insertDataIntoCard(constructedRepoElement, items[i]);
+        //console.log("repo element" + constructedRepoElement);
+        repoElement.appendChild(constructedRepoElement);
+    }
     mainElement.appendChild(repoElement);
 }
