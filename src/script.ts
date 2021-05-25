@@ -65,7 +65,6 @@ function constructGitHubAPIRequest(): string {
     if (filters.user != ``) {
         GitHubAPICall += `+user:${filters.user}`;
     }
-    console.log(GitHubAPICall);
     return GitHubAPICall;
 }
 
