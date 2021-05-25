@@ -1,5 +1,13 @@
-let mainElement: HTMLElement = document.querySelector("#main");
+function getMainElement(): HTMLElement {
+    let mainElement: HTMLElement = document.querySelector("#main");
+    return mainElement;
+}
+
+//Grab submit element and add sendRequestToGitHubAPI function when
+//clicked on
+
 let submitElement: HTMLElement = document.querySelector("#submit");
+submitElement.addEventListener("click", sendRequestToGitHubAPI);
 
 //Collecting available language filters and adding functions so that
 //the language that's been clicked becomes the language to filter by
@@ -18,45 +26,45 @@ function setAsCurrentLanguage(e: Event): void {
     selectedElement.className = "lang active";
 }
 
-submitElement.addEventListener("click", sendRequestToGitHubAPI);
 
 //Function to find the user's chosen filters and return them as a JSON object
 
 function obtainFilters(): JSON {
     let userFilter: HTMLInputElement = document.querySelector("#user");
-    let repoFilter: HTMLInputElement = document.querySelector("#repo");
+    let repositoryFilter: HTMLInputElement = document.querySelector("#repo");
     let languageFilter: string = document.querySelector(".lang.active").textContent;
-    let filterJSON: any = {
-        "repo": repoFilter.value,
+    let filters: any = {
+        "repository": repositoryFilter.value,
         "user": userFilter.value,
         "language": languageFilter
     }
-    return <JSON>filterJSON;
+    return <JSON>filters;
 }
 
 function clearCurrentRepositories(): void {
-    mainElement.innerHTML = "";
+    getMainElement().innerHTML = "";
 }
 
 //Function to constructor the API call based on the user's selected filters
 
 function constructGitHubAPIRequest(): string {
-    let filterJSON: any = obtainFilters();
+    let filters: any = obtainFilters();
     let GitHubAPICall: string = `https://api.github.com/search/repositories?q=`;
-    let repo = filterJSON.repo;
-    GitHubAPICall += `${repo}`;
-    if (filterJSON.language != ``) {
-        if (filterJSON.language == "All" && filterJSON.user == "") {
+    GitHubAPICall += `${filters.repository}`;
+    //checking to see if filters have been selected or not
+    if (filters.language != ``) {
+        //change language filter addition to the APICall depending on if no language
+        //filter has been chosen
+        if (filters.language == "All" && filters.user == "") {
             GitHubAPICall += `+language:`;
         }
         else {
-            GitHubAPICall +=  `+language:${filterJSON.language}`;
+            GitHubAPICall +=  `+language:${filters.language}`;
         }
     }
-    if (filterJSON.user != ``) {
-        GitHubAPICall += `+user:${filterJSON.user}`;
+    if (filters.user != ``) {
+        GitHubAPICall += `+user:${filters.user}`;
     }
-  
     return GitHubAPICall;
 }
 
@@ -79,9 +87,8 @@ function sendRequestToGitHubAPI(e: Event): void {
     .then(data => {
         //Checks to see if any repositories match the user's filters
         if (data.items.length == 0) {
-            mainElement.innerHTML = `<h1 class="text-center">No repositories found!</h1>`;
+            getMainElement().innerHTML = `<h1 class="text-center">No repositories found!</h1>`;
         }
-        //return data;
         outputRepositoriesToDocument(data.items);
     })
     .catch(error => {
@@ -120,8 +127,8 @@ function fetchReadMe(item: any): void {
         else {
             readMeElement.innerHTML = html;
         }
-        let repo = document.querySelector(`#${item.name}`);
-        repo.appendChild(readMeElement);
+        let repository: HTMLElement = document.querySelector(`#${item.name}`);
+        repository.appendChild(readMeElement);
     })
     .catch(error => {
         console.log(error);
@@ -179,5 +186,5 @@ function outputRepositoriesToDocument(items: Array<any>): void {
         constructedRepoElement = constructRepositoryHTML(items[i]);
         repoElement.appendChild(constructedRepoElement);
     }
-    mainElement.appendChild(repoElement);
+    getMainElement().appendChild(repoElement);
 }
