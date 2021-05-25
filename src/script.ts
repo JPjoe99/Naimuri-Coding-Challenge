@@ -55,16 +55,17 @@ function constructGitHubAPIRequest(): string {
     if (filters.language != ``) {
         //change language filter addition to the APICall depending on if no language
         //filter has been chosen
-        if (filters.language == "All" && filters.user == "") {
+        if (filters.language == "All" && filters.user == "" && filters.repository == "") {
             GitHubAPICall += `+language:`;
         }
         else {
-            GitHubAPICall +=  `+language:${filters.language}`;
+            GitHubAPICall += `+language:${filters.language}`;
         }
     }
     if (filters.user != ``) {
         GitHubAPICall += `+user:${filters.user}`;
     }
+    console.log(GitHubAPICall);
     return GitHubAPICall;
 }
 
