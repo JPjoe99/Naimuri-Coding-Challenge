@@ -26,7 +26,7 @@ In terms of filters, more filters could be potentially added to the application,
 
 Another feature could be to also sort the repositories received by increasing/decreasing number in the parameters mentioned above.
 
-In terms of the UI, this could be improved massively as I currently don't find it very visually apealling. The formatting of the README content could also be improved as the size of the README can negatively affect the UI, and repositories without README files cause the application to return a JSON response given by the GitHub API, stating that the file could not be found.
+In terms of the UI, this could be improved massively as it's not a responsive UI (and it's also not very visually appealing in my opinion). The formatting of the README content could also be improved as the size of the README can negatively affect the UI, and repositories without README files cause the application to return a JSON response given by the GitHub API, stating that the file could not be found.
 
 In terms of retrieving the README content of the repositories, the GitHub API has a limit on the number of requests made per hour, resulting in some repository README files not being displayed if this limit has been exceeded. Bypassing this limit would benefit the application, but I'm not entirely sure how this could be achieved.
 
