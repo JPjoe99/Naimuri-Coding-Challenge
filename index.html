@@ -10,25 +10,27 @@
 </head>
 <body>
     <div id="topnav">
-        <a id="home">NAIMURI CODING CHALLENGE</a>
+        <a href="/" id="home">NAIMURI CODING CHALLENGE</a>
         <a>FILTER YOUR SEARCH -></a>
         <div class="dropdown">
-            <button class="dropbtn">LANGUAGE</button>
+            <button class="dropbtn">SELECT LANGUAGE</button>
             <div class="dropdown-content">
-                <a class="lang">All</a>
-                <a class="lang active">HTML</a>
+                <a class="lang active">All</a>
+                <a class="lang">HTML</a>
                 <a class="lang">CSS</a>
                 <a class="lang">JavaScript</a>
+                <a class="lang">TypeScript</a>
+                <a class="lang">CPP</a>
+                
             </div>
         </div>
-        <input id="user" type="text" placeholder="specific user?">
+        <input id="user" type="text" placeholder="Enter a specific user">
         <div class="search">
-            <input id="repo" type="text" placeholder="repository name?">      
+            <input id="repo" type="text" placeholder="Enter a specific repository">      
             <button id="submit" type="submit">Search</button>
         </div>  
     </div>
-    <div id="main" class="container">
-    </div>
+    <div id="main" class="container"></div>
     
 
     <script src="dist/bundle.js"></script>
