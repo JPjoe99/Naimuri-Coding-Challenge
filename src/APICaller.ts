@@ -20,6 +20,24 @@ class APICaller {
     setHeaders(headersIn: string): void {
         this.headers = headersIn;
     }
+    sendREADMERequest(): any {
+        let requestResult: Promise<any> = fetch(this.request, {
+            method: "GET",
+            headers: {
+                "Accept": "application/vnd.github.html"
+            }
+        })
+        .then(res => {
+            return res.text();
+        })
+        .then(README => {
+            return README;
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        return requestResult;
+    }
     sendSearchRequest(): any {
         this.buildSearchRequest();
         console.log(this.filter);
@@ -49,6 +67,8 @@ class APICaller {
     }
     getFilter(): Filter {
         return this.filter;
+    }
+    buildREADMERequest(): void {
     }
     buildSearchRequest(): void {
         this.setMethod("GET");
