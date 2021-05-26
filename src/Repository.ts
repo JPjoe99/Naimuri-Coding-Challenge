@@ -1,4 +1,5 @@
 class Repository {
+    private id: number;
     private name: string;
     private repoURL: string;
     private author: string;
@@ -7,8 +8,9 @@ class Repository {
     private starNumber: number;
     private issueNumber: number;
     private readMe: HTMLElement;
-    constructor(nameIn: string, repoURLIn: string, authorIn: string, authorURLIn: string, forkNumberIn: number, 
+    constructor(idIn: number, nameIn: string, repoURLIn: string, authorIn: string, authorURLIn: string, forkNumberIn: number, 
         starNumberIn: number, issueNumberIn: number) {
+            this.id = idIn;
             this.name = nameIn;
             this.repoURL = repoURLIn;
             this.author = authorIn;
@@ -16,6 +18,12 @@ class Repository {
             this.forkNumber = forkNumberIn;
             this.starNumber = starNumberIn;
             this.issueNumber = issueNumberIn;
+    }
+    getID(): number {
+        return this.id;
+    }
+    setID(idIn: number): void {
+        this.id = idIn;
     }
     getName(): string {
         return this.name;
