@@ -16,7 +16,7 @@ class Application {
         let usernameElement: HTMLElement = document.querySelector("#username");
         let repoElement: HTMLElement = document.querySelector("#repo");
         let activeLanguageElements: NodeListOf<Element> = document.querySelectorAll("#lang");
-        submitElement.addEventListener("click", this.sendRequestToAPI);
+        submitElement.addEventListener("click", this.sendSearchRequestToAPI);
         usernameElement.addEventListener("keyup", this.setUsernameFilter);
         repoElement.addEventListener("keyup", this.setRepositoryFilter);
         for (let i: number = 0; i < activeLanguageElements.length; i++) {
@@ -42,13 +42,13 @@ class Application {
         let usernameValue: string = usernameElement.value;
         this.APICaller.getFilter().setUser(usernameValue);
     }
-    private sendRequestToAPI = (e: Event): void => {
+    private sendSearchRequestToAPI = (e: Event): void => {
         this.resetRepositories();
         let repos: Promise<any> = this.APICaller.sendSearchRequest();
         repos.then(repos => {
             for (let i: number = 0; i < repos.items.length; i++) {
                 let item = repos.items[i];
-                let repository = new Repository(item.name, item.html_url, item.owner.login,
+                let repository = new Repository(item.id, item.name, item.html_url, item.owner.login,
                                             item.owner.html_url, item.forks_count,
                                             item.stargazers_count, item.open_issues_count);
                 this.repositories.push(repository);
