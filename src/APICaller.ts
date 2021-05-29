@@ -36,7 +36,6 @@ class APICaller {
         .then(README => {
             try {
                 if (JSON.parse(README)) {
-                    //README = JSON.parse(README);
                     console.log(JSON.parse(README));
                     README = `<h2 class="text-center">README is currently unavailable</h2>`;
                 }
@@ -53,8 +52,6 @@ class APICaller {
     }
     sendSearchRequest(): any {
         this.buildSearchRequest();
-        console.log(this.filter);
-        console.log(this.getRequest());
         let requestResult: Promise<any> = fetch(this.request, {
             method: "GET",
             headers: {
