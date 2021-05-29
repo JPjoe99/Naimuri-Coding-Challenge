@@ -16,16 +16,12 @@ class Application {
         let usernameElement: HTMLElement = document.querySelector("#username");
         let repoElement: HTMLElement = document.querySelector("#repo");
         let activeLanguageElements: NodeListOf<Element> = document.querySelectorAll("#lang");
-        submitElement.addEventListener("click", this.sendSearchRequestToAPI);
+        submitElement.addEventListener("click", this.retrieveRepositories);
         usernameElement.addEventListener("keyup", this.setUsernameFilter);
         repoElement.addEventListener("keyup", this.setRepositoryFilter);
         for (let i: number = 0; i < activeLanguageElements.length; i++) {
             activeLanguageElements[i].addEventListener("click", this.setLanguageFilter);
         }
-
-    }
-    run(): void {
-
     }
     private setLanguageFilter = (e: Event): void => {
         let languageElement: HTMLLinkElement = <HTMLLinkElement>e.target;
@@ -42,18 +38,37 @@ class Application {
         let usernameValue: string = usernameElement.value;
         this.APICaller.getFilter().setUser(usernameValue);
     }
-    private sendSearchRequestToAPI = (e: Event): void => {
+    private retrieveRepositories = (e: Event): void => {
+        this.output.clearMainBody();
         this.resetRepositories();
         let repos: Promise<any> = this.APICaller.sendSearchRequest();
         repos.then(repos => {
-            for (let i: number = 0; i < repos.items.length; i++) {
-                let item = repos.items[i];
-                let repository = new Repository(item.id, item.name, item.html_url, item.owner.login,
-                                            item.owner.html_url, item.forks_count,
-                                            item.stargazers_count, item.open_issues_count);
-                this.repositories.push(repository);
+            try {
+                if (repos.items.length > 0) {
+                    for (let i: number = 0; i < repos.items.length; i++) {
+                        let item = repos.items[i];
+                        let repository = new Repository(item.id, item.name, item.html_url, item.owner.login,
+                                                    item.owner.html_url, item.forks_count,
+                                                    item.stargazers_count, item.open_issues_count);
+                        this.repositories.push(repository);  
+                        let repoREADMEResult: Promise<any> = this.APICaller.sendREADMERequest(repository);
+                        repoREADMEResult.then(README => {
+                            repository.setREADME(README);
+                            this.output.drawRepositoryCard(repository);
+                        })            
+                        .catch(error => {
+                            console.log(error);
+                        })
+                    }
+                }
+                else {
+                    this.output.outputNoRepositoriesFound();
+                }
             }
-            this.output.drawRepositoryCards(this.getRepositories());
+            catch {
+                this.output.outputNoRepositoriesFound();
+            }
+             
         })
         .catch(error => {
             console.log(error);
