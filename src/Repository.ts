@@ -7,7 +7,7 @@ class Repository {
     private forkNumber: number;
     private starNumber: number;
     private issueNumber: number;
-    private readMe: HTMLElement;
+    private README: HTMLDivElement;
     constructor(idIn: number, nameIn: string, repoURLIn: string, authorIn: string, authorURLIn: string, forkNumberIn: number, 
         starNumberIn: number, issueNumberIn: number) {
             this.id = idIn;
@@ -51,6 +51,12 @@ class Repository {
     }
     getIssueNumber(): number {
         return this.issueNumber;
+    }
+    getREADME(): HTMLDivElement {
+        return this.README;
+    }
+    setREADME(READMEIn: HTMLDivElement): void {
+        this.README = READMEIn;
     }
 }
 
