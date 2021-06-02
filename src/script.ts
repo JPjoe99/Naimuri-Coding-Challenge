@@ -1,4 +1,4 @@
-import {Application} from "./Application";
+import {Application} from "./classes/Application";
 
 let application: Application = new Application;
 
