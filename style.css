@@ -87,6 +87,52 @@ body {
     padding: 6px;
     margin-top: 8px;
 }
+#topnav .icon {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    #topnav a:not(:first-child) {display: none;}
+    #topnav div.dropdown {display: none;}
+    #topnav div.search {display: none;}
+    #topnav input {display: none;}
+    #topnav a.icon {
+        display: block;
+        float: right;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #topnav.responsive {position: relative};
+    #topnav.responsive a#home {
+        float: left;
+    }
+    #topnav.responsive a.icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    #topnav.responsive a {
+        text-align: left;
+        float: none;
+        display: block;
+    }
+    #topnav.responsive div.dropdown {
+        text-align: left;
+        float: none;
+        display: block;
+    }
+    #topnav.responsive div.search {
+        text-align: left;
+        float: none;
+        display: block;
+    }
+    #topnav.responsive input {
+        text-align: left;
+        float: none;
+        display: block;
+    }
+}
 
 .text-center {
     text-align: center;
