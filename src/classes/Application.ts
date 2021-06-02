@@ -12,6 +12,7 @@ class Application {
         this.repositories = new Array;
     }
     start(): void {
+        let iconElement: HTMLElement = document.querySelector(".icon");
         let submitElement: HTMLElement = document.querySelector("#submit");
         let usernameElement: HTMLElement = document.querySelector("#username");
         let repoElement: HTMLElement = document.querySelector("#repo");
@@ -21,6 +22,17 @@ class Application {
         repoElement.addEventListener("keyup", this.setRepositoryFilter);
         for (let i: number = 0; i < activeLanguageElements.length; i++) {
             activeLanguageElements[i].addEventListener("click", this.setLanguageFilter);
+        }
+        iconElement.addEventListener("click", this.setBurgerMenu);
+    }
+    private setBurgerMenu = (e: Event): void => {
+        let element: HTMLElement = <HTMLElement>e.target;
+        let navbarElement: HTMLElement = element.parentElement;
+        if (navbarElement.classList.contains("responsive")) {
+            navbarElement.classList.remove("responsive");
+        }
+        else {
+            navbarElement.classList.add("responsive");
         }
     }
     private setLanguageFilter = (e: Event): void => {
