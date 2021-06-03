@@ -21,7 +21,7 @@ for (let i: number = 0; i < languages.length; i++) {
 
 function setAsCurrentLanguage(e: Event): void {
     let currentLang = document.querySelector(".lang.active");
-    currentLang.className = ".lang";
+    currentLang.className = "lang";
     let selectedElement = <HTMLElement>(e.target);
     selectedElement.className = "lang active";
 }
