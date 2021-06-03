@@ -145,7 +145,6 @@ body {
     overflow: hidden;
 }
 
-
 .dropbtn {
     padding: 14px 16px;
     color: gray;
@@ -170,7 +169,7 @@ body {
     cursor: pointer;
 }
 
-.dropdown-content a {
+#dropdown-items a#lang {
     float: none;
     display: block;
     padding: 12px 16px;
