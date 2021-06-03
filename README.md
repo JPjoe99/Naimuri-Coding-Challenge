@@ -37,4 +37,8 @@ In terms of the UI, this could be improved massively as it's not a responsive UI
 
 In terms of retrieving the README content of the repositories, the GitHub API has a limit on the number of requests made per hour, resulting in some repository README files not being displayed if this limit has been exceeded. Bypassing this limit would benefit the application, but I'm not entirely sure how this could be achieved.
 
+UPDATE
+
+I decided to try the object-oriented approach that I mentioned previously, and this can be viewed on the oop-method branch of the repository.
+
 [Click here to view!](https://jpjoe99.github.io/Naimuri-Coding-Challenge/)
