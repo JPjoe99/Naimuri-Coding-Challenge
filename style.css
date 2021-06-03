@@ -109,7 +109,8 @@ body {
     cursor: pointer;
 }
 
-.dropdown-content a {
+#dropdown-items a.lang {
+    float: none;
     display: block;
     padding: 12px 16px;
     text-decoration: none;
@@ -121,7 +122,7 @@ body {
     background-color: darkgray;
 }
 
-.dropdown-content .active {
+#dropdown-items a.lang.active {
     background-color: white;
 }
 
